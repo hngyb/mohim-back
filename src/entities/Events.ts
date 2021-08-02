@@ -1,0 +1,87 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { IsDate, IsNotEmpty, IsString } from 'class-validator';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+
+@Entity({ schema: 'mohim', name: 'events' })
+export class Events {
+  @ApiProperty({
+    example: 1,
+    description: '일정 아이디',
+  })
+  @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
+  id: number;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    example: '청년회 전체교제',
+    description: '일정 제목',
+  })
+  @Column('varchar', { name: 'name', length: 300 })
+  title: string;
+
+  @IsDate()
+  @IsNotEmpty()
+  @ApiProperty({
+    example: '2021-08-02',
+    description: '날짜',
+  })
+  @Column('date', { name: 'date' })
+  date: Date;
+
+  @IsDate()
+  @ApiProperty({
+    example: '00:00',
+    description: '시작 시간',
+  })
+  @Column('time', { name: 'start_time', nullable: true })
+  start_time: Date | null;
+
+  @IsDate()
+  @ApiProperty({
+    example: '12:00',
+    description: '종료 시간',
+  })
+  @Column('time', { name: 'end_time', nullable: true })
+  end_time: Date | null;
+
+  @IsString()
+  @ApiProperty({
+    example: '일산교회 대강당',
+    description: '일정 장소',
+  })
+  @Column('varchar', { name: 'location', length: 100, nullable: true })
+  location: string | null;
+
+  @IsString()
+  @ApiProperty({
+    example: '비대면 모임입니다.',
+    description: '일정 공지사항',
+  })
+  @Column('text', { name: 'notice', nullable: true })
+  notice: string | null;
+
+  @IsString()
+  @ApiProperty({
+    example: '일정 공유 내용.',
+    description: '일정 공유 내용',
+  })
+  @Column('text', { name: 'contents', nullable: true })
+  contents: string | null;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date | null;
+}
