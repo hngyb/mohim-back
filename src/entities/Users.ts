@@ -13,7 +13,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { BelongTos } from './BelongTos';
+import { Follows } from './Follows';
 import { Groups } from './Groups';
+import { Manages } from './Manages';
 
 @Index('email', ['email'], { unique: true })
 @Entity({ schema: 'mohim', name: 'users' })
@@ -76,7 +78,7 @@ export class Users {
     example: '010-1234-5678',
     description: '핸드폰 번호',
   })
-  @Column('varchar', { name: 'phone_number', length: 15, nullable: true })
+  @Column('varchar', { name: 'phoneNumber', length: 15, nullable: true })
   phone_number: string | null;
 
   @IsString()
@@ -100,8 +102,17 @@ export class Users {
     example: '2004-01-01',
     description: '구원생일',
   })
-  @Column('date', { name: 'salvation_date', nullable: true })
+  @Column('date', { name: 'salvationDate', nullable: true })
   salvation_date: Date | null;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    example: 'HashedMembershipCode',
+    description: '멤버십 코드',
+  })
+  @Column('varchar', { name: 'membershipCode', length: 300, select: false })
+  membershipCode: string;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -124,8 +135,42 @@ export class Users {
       referencedColumnName: 'id',
     },
   })
-  Groups: Groups[];
+  BelongToGroups: Groups[];
 
   @OneToMany(() => BelongTos, (belongtos) => belongtos.User)
   BelongTos: BelongTos[];
+
+  @ManyToMany(() => Groups, (groups) => groups.Followers)
+  @JoinTable({
+    name: 'follows',
+    joinColumn: {
+      name: 'UserId',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'GroupId',
+      referencedColumnName: 'id',
+    },
+  })
+  FollowGroups: Groups[];
+
+  @OneToMany(() => Follows, (follows) => follows.Follower)
+  Follows: Follows[];
+
+  @ManyToMany(() => Groups, (groups) => groups.Managers)
+  @JoinTable({
+    name: 'manages',
+    joinColumn: {
+      name: 'UserId',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'GroupId',
+      referencedColumnName: 'id',
+    },
+  })
+  ManageGroups: Groups[];
+
+  @OneToMany(() => Manages, (manages) => manages.Manager)
+  Manages: Manages[];
 }

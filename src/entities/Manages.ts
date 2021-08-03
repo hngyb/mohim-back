@@ -12,8 +12,8 @@ import { Groups } from './Groups';
 import { Users } from './Users';
 
 @Index('UserId', ['UserId'], {})
-@Entity({ schema: 'mohim', name: 'belongtos' })
-export class BelongTos {
+@Entity({ schema: 'mohim', name: 'manages' })
+export class Manages {
   @CreateDateColumn()
   createdAt: Date;
 
@@ -29,17 +29,17 @@ export class BelongTos {
   @Column('int', { primary: true, name: 'GroupId' })
   GroupId: number;
 
-  @ManyToOne(() => Users, (users) => users.BelongTos, {
+  @ManyToOne(() => Users, (users) => users.Manages, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
   @JoinColumn([{ name: 'UserId', referencedColumnName: 'id' }])
-  User: Users;
+  Manager: Users;
 
-  @ManyToOne(() => Groups, (groups) => groups.BelongTos, {
+  @ManyToOne(() => Groups, (groups) => groups.Managers, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
   @JoinColumn([{ name: 'GroupId', referencedColumnName: 'id' }])
-  BelongToGroup: Groups;
+  ManageGroup: Groups;
 }

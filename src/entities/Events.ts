@@ -5,9 +5,12 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Groups } from './Groups';
 
 @Entity({ schema: 'mohim', name: 'events' })
 export class Events {
@@ -24,7 +27,7 @@ export class Events {
     example: '청년회 전체교제',
     description: '일정 제목',
   })
-  @Column('varchar', { name: 'name', length: 300 })
+  @Column('varchar', { name: 'title', length: 300 })
   title: string;
 
   @IsDate()
@@ -41,16 +44,16 @@ export class Events {
     example: '00:00',
     description: '시작 시간',
   })
-  @Column('time', { name: 'start_time', nullable: true })
-  start_time: Date | null;
+  @Column('time', { name: 'startTime', nullable: true })
+  startTime: Date | null;
 
   @IsDate()
   @ApiProperty({
     example: '12:00',
     description: '종료 시간',
   })
-  @Column('time', { name: 'end_time', nullable: true })
-  end_time: Date | null;
+  @Column('time', { name: 'endTime', nullable: true })
+  endTime: Date | null;
 
   @IsString()
   @ApiProperty({
@@ -84,4 +87,11 @@ export class Events {
 
   @DeleteDateColumn()
   deletedAt: Date | null;
+
+  @ManyToOne(() => Groups, (groups) => groups, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn([{ name: 'GroupId', referencedColumnName: 'id' }])
+  Group: Groups;
 }

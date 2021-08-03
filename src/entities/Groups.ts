@@ -7,11 +7,15 @@ import {
   Entity,
   Index,
   ManyToMany,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { BelongTos } from './BelongTos';
+import { Events } from './Events';
+import { Follows } from './Follows';
+import { Manages } from './Manages';
 import { Users } from './Users';
 
 @Index('church', ['church'])
@@ -39,7 +43,7 @@ export class Groups {
     example: '일산교회',
     description: '교회명',
   })
-  @Column('varchar', { name: 'name', length: 30 })
+  @Column('varchar', { name: 'church', length: 30 })
   church: string;
 
   @IsBoolean()
@@ -60,9 +64,24 @@ export class Groups {
   @DeleteDateColumn()
   deletedAt: Date | null;
 
-  @ManyToMany(() => Users, (users) => users.Groups)
+  @ManyToMany(() => Users, (users) => users.BelongToGroups)
   Users: Users[];
 
-  @OneToMany(() => BelongTos, (belongtos) => belongtos.Group)
+  @OneToMany(() => BelongTos, (belongtos) => belongtos.BelongToGroup)
   BelongTos: BelongTos[];
+
+  @ManyToMany(() => Users, (users) => users.FollowGroups)
+  Followers: Users[];
+
+  @OneToMany(() => Follows, (follows) => follows.FollowGroup)
+  Follows: Follows[];
+
+  @ManyToMany(() => Users, (users) => users.ManageGroups)
+  Managers: Users[];
+
+  @OneToMany(() => Manages, (manages) => manages.ManageGroup)
+  Manages: Manages[];
+
+  @OneToMany(() => Events, (events) => events.Group)
+  Events: Events[];
 }
