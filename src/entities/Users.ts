@@ -24,7 +24,7 @@ export class Users {
     example: 1,
     description: '사용자 아이디',
   })
-  @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
+  @PrimaryGeneratedColumn('uuid', { name: 'id' })
   id: number;
 
   @IsEmail()
@@ -104,15 +104,6 @@ export class Users {
   })
   @Column('date', { name: 'salvationDate', nullable: true })
   salvation_date: Date | null;
-
-  @IsString()
-  @IsNotEmpty()
-  @ApiProperty({
-    example: 'HashedMembershipCode',
-    description: '멤버십 코드',
-  })
-  @Column('varchar', { name: 'membershipCode', length: 300, select: false })
-  membershipCode: string;
 
   @CreateDateColumn()
   createdAt: Date;
