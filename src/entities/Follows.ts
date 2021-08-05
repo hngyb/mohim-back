@@ -23,8 +23,8 @@ export class Follows {
   @DeleteDateColumn()
   deletedAt: Date | null;
 
-  @Column('int', { primary: true, name: 'UserId' })
-  UserId: number;
+  @Column('varchar', { primary: true, name: 'UserId' })
+  UserId: string;
 
   @Column('int', { primary: true, name: 'GroupId' })
   GroupId: number;

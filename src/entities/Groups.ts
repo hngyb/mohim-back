@@ -7,7 +7,6 @@ import {
   Entity,
   Index,
   ManyToMany,
-  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -49,10 +48,10 @@ export class Groups {
   @IsBoolean()
   @IsNotEmpty()
   @ApiProperty({
-    example: 'true',
+    example: true,
     description: '공개여부',
   })
-  @Column('boolean', { name: 'isPublic' })
+  @Column('boolean', { name: 'isPublic', default: false })
   isPublic: boolean;
 
   @CreateDateColumn()

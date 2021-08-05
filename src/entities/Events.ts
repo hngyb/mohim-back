@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsNotEmpty, IsString } from 'class-validator';
+import { IsDate, IsDateString, IsNotEmpty, IsString } from 'class-validator';
 import {
   Column,
   CreateDateColumn,
@@ -30,7 +30,7 @@ export class Events {
   @Column('varchar', { name: 'title', length: 300 })
   title: string;
 
-  @IsDate()
+  @IsDateString()
   @IsNotEmpty()
   @ApiProperty({
     example: '2021-08-02',
@@ -39,7 +39,6 @@ export class Events {
   @Column('date', { name: 'date' })
   date: Date;
 
-  @IsDate()
   @ApiProperty({
     example: '00:00',
     description: '시작 시간',
@@ -47,7 +46,6 @@ export class Events {
   @Column('time', { name: 'startTime', nullable: true })
   startTime: Date | null;
 
-  @IsDate()
   @ApiProperty({
     example: '12:00',
     description: '종료 시간',
@@ -71,13 +69,8 @@ export class Events {
   @Column('text', { name: 'notice', nullable: true })
   notice: string | null;
 
-  @IsString()
-  @ApiProperty({
-    example: '일정 공유 내용.',
-    description: '일정 공유 내용',
-  })
-  @Column('text', { name: 'contents', nullable: true })
-  contents: string | null;
+  @Column('int', { name: 'GroupId', nullable: false })
+  GroupId: number;
 
   @CreateDateColumn()
   createdAt: Date;

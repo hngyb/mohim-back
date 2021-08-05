@@ -23,6 +23,7 @@ const config: TypeOrmModuleOptions = {
   synchronize: false, // 서버 첫 시작일 때만 true
   logging: true,
   keepConnectionAlive: true,
+  timezone: 'Asia/Seoul',
 };
 
 export = config;

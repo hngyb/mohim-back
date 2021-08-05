@@ -7,6 +7,10 @@ import * as ormconfig from '../ormconfig';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { GroupsModule } from './groups/groups.module';
+import { EventsModule } from './events/events.module';
+import { FollowsModule } from './follows/follows.module';
+import { BelongTosModule } from './belong-tos/belong-tos.module';
 
 @Module({
   imports: [
@@ -14,6 +18,10 @@ import { AuthModule } from './auth/auth.module';
     UsersModule,
     TypeOrmModule.forRoot(ormconfig),
     AuthModule,
+    GroupsModule,
+    EventsModule,
+    FollowsModule,
+    BelongTosModule,
   ],
   controllers: [AppController],
   providers: [AppService],
