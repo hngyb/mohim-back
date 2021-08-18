@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsDate,
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+} from 'class-validator';
 import {
   Column,
   CreateDateColumn,
@@ -104,6 +110,15 @@ export class Users {
   })
   @Column('date', { name: 'salvationDate', nullable: true })
   salvation_date: Date | null;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  @ApiProperty({
+    example: true,
+    description: '성도 인증',
+  })
+  @Column('boolean', { name: 'isAuthorized', default: false })
+  isAuthorized: boolean;
 
   @CreateDateColumn()
   createdAt: Date;

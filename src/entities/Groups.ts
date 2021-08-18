@@ -54,6 +54,19 @@ export class Groups {
   @Column('boolean', { name: 'isPublic', default: false })
   isPublic: boolean;
 
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    example: 'church | district | group | service | fellowship',
+    description: '그룹 구분',
+  })
+  @Column('enum', {
+    name: 'category',
+    enum: ['church', 'district', 'group', 'service', 'fellowship'],
+    default: 'fellowship',
+  })
+  category: 'church' | 'district' | 'group' | 'service' | 'fellowship';
+
   @CreateDateColumn()
   createdAt: Date;
 

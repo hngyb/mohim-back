@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   ConflictException,
   Controller,
@@ -44,12 +45,53 @@ export class UsersController {
     return await this.userService.login(user);
   }
 
-  @ApiOperation({ summary: 'Refresh 토큰 재발급' })
+  @ApiOperation({ summary: '성도 등록' })
+  @UseGuards(JwtAuthGuard)
+  @Post('register')
+  async register(@Body() data, @Request() req) {
+    const id = req.user.id;
+    const sex = data.sex;
+    const groups = [data.church, data.district, data.group];
+    data.services.forEach((service) => {
+      groups.push(service);
+    });
+    return await this.userService.register(id, sex, groups);
+  }
+
+  @ApiOperation({ summary: 'access 토큰 재발급' })
   @UseGuards(JwtRefreshGuard)
-  @Get('refresh')
-  async refresh(@Request() req) {
+  @Get('refresh-access')
+  async refreshAccess(@Request() req) {
+    const user = req.user;
+    return await this.userService.refreshAccessToken(user);
+  }
+
+  @ApiOperation({ summary: 'refresh & access 토큰 재발급' })
+  @UseGuards(JwtRefreshGuard)
+  @Get('refresh-all')
+  async refreshAll(@Request() req) {
     const user = req.user;
     return await this.userService.login(user);
+  }
+
+  @ApiOperation({ summary: '성도 인증 요청' })
+  @UseGuards(JwtAuthGuard)
+  @Post('request-authorization')
+  async requestAuthorization(@Body() data) {
+    const inviteCode = data.inviteCode;
+    const user = await this.userService.findById(inviteCode);
+    if (!user) {
+      throw new BadRequestException();
+    }
+    return user;
+  }
+
+  @ApiOperation({ summary: '성도 인증 확인' })
+  @UseGuards(JwtAuthGuard)
+  @Get('is-authorized')
+  async isAuthorized(@Request() req) {
+    const id = req.user.id;
+    return await this.userService.isAuthorized(id);
   }
 
   @ApiOperation({ summary: '로그아웃' })

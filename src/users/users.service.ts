@@ -1,6 +1,8 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from 'src/entities/Users';
+import { BelongTos } from 'src/entities/BelongTos';
+import { Follows } from 'src/entities/Follows';
 import { Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
 import { AuthService } from 'src/auth/auth.service';
@@ -9,7 +11,10 @@ import { AuthService } from 'src/auth/auth.service';
 export class UsersService {
   constructor(
     @InjectRepository(Users) private usersRepository: Repository<Users>,
-    @Inject(forwardRef(() => AuthService))
+    @InjectRepository(BelongTos)
+    private belongTosRepository: Repository<BelongTos>,
+    @InjectRepository(Follows)
+    private followsRepository: Repository<Follows>,
     private authService: AuthService,
   ) {}
 
@@ -20,7 +25,7 @@ export class UsersService {
     });
   }
 
-  async findById(id: number) {
+  async findById(id: string) {
     return this.usersRepository.findOne({
       where: { id },
       select: ['id', 'name', 'email'],
@@ -49,6 +54,13 @@ export class UsersService {
     };
   }
 
+  async refreshAccessToken(user: any) {
+    const accessToken = await this.authService.getJwtAccessToken(user);
+    return {
+      accessToken: accessToken,
+    };
+  }
+
   async setCurrentRefreshToken(refreshToken: string, id: number) {
     const currentHashedRefreshToken = await bcrypt.hash(refreshToken, 12);
     await this.usersRepository.update(id, { currentHashedRefreshToken });
@@ -72,5 +84,33 @@ export class UsersService {
 
   async removeRefreshToken(id: number) {
     return this.usersRepository.update(id, { currentHashedRefreshToken: null });
+  }
+
+  async register(
+    id: string,
+    sex: 'brother' | 'sister',
+    groupIds: Array<number>,
+  ) {
+    await this.usersRepository.update(id, { sex, isAuthorized: true });
+    groupIds.forEach(async (groupId) => {
+      await this.belongTosRepository.save({
+        GroupId: groupId,
+        UserId: id,
+      });
+    });
+    groupIds.forEach(async (groupId) => {
+      await this.followsRepository.save({
+        GroupId: groupId,
+        UserId: id,
+      });
+    });
+  }
+
+  async isAuthorized(id: string) {
+    const user = await this.usersRepository.findOne({
+      where: { id },
+      select: ['id', 'isAuthorized'],
+    });
+    return user;
   }
 }

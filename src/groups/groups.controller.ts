@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt.guard';
 import { CreateGroupDto } from './dto/create-group.dto';
@@ -14,5 +14,15 @@ export class GroupsController {
   @Post()
   async createGroup(@Body() data: CreateGroupDto) {
     return await this.groupService.createGroup(data);
+  }
+
+  @ApiOperation({ summary: '그룹 ID 검색' })
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  async getGroupId(
+    @Query('name') name: string,
+    @Query('church') church: string,
+  ) {
+    return await this.groupService.getGroupId(name, church);
   }
 }

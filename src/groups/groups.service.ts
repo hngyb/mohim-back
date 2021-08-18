@@ -17,4 +17,11 @@ export class GroupsService {
     newGroup.isPublic = group.isPublic;
     await this.groupRepository.save(newGroup);
   }
+
+  async getGroupId(name: string, church: string) {
+    return this.groupRepository.findOne({
+      where: { name, church },
+      select: ['id', 'name', 'church'],
+    });
+  }
 }
