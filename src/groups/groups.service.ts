@@ -21,7 +21,7 @@ export class GroupsService {
   async getGroupId(name: string, church: string) {
     return this.groupRepository.findOne({
       where: { name, church },
-      select: ['id', 'name', 'church'],
+      select: ['id', 'name', 'church', 'category'],
     });
   }
 }
