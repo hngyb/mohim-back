@@ -25,4 +25,11 @@ export class GroupsController {
   ) {
     return await this.groupService.getGroupId(name, church);
   }
+
+  @ApiOperation({ summary: '교회 목록 가져오기' })
+  @UseGuards(JwtAuthGuard)
+  @Get('church-list')
+  async getChurchList() {
+    return await this.groupService.getChurchList();
+  }
 }

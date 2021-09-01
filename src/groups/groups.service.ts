@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Groups } from 'src/entities/Groups';
-import { Repository } from 'typeorm';
+import { getManager, Repository } from 'typeorm';
 import { CreateGroupDto } from './dto/create-group.dto';
 
 @Injectable()
@@ -23,5 +23,11 @@ export class GroupsService {
       where: { name, church },
       select: ['id', 'name', 'church', 'category'],
     });
+  }
+
+  async getChurchList() {
+    const entitiyManager = getManager();
+    return await entitiyManager.query(`
+        SELECT * FROM mohim.groups WHERE name = church and category = 'church'`);
   }
 }

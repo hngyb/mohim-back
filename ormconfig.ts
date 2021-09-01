@@ -20,7 +20,7 @@ const config: TypeOrmModuleOptions = {
   cli: { migrationsDir: 'src/migrations' },
   // autoLoadEntities: true,
   charset: 'utf8mb4',
-  synchronize: false, // 서버 첫 시작일 때만 true
+  synchronize: true, // 서버 첫 시작일 때만 true
   logging: true,
   keepConnectionAlive: true,
   timezone: 'Asia/Seoul',

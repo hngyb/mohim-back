@@ -91,6 +91,33 @@ export class UsersService {
     sex: 'brother' | 'sister',
     groupIds: Array<number>,
   ) {
+    const colorPalettes = [
+      '#B71C1C',
+      '#FF8A80',
+      '#A1887F',
+      '#795548',
+      '#C5E1A5',
+      '#004D40',
+      '#80D8FF',
+      '#2979FF',
+      '#E0E0E0',
+      '#FFEB3B',
+      '#E53935',
+      '#0097A7',
+      '#64B5F6',
+      '#81D4FA',
+      '#7986CB',
+      '#FFF8E1',
+      '#FFECB3',
+      '#FFE082',
+      '#DCE775',
+      '#FF7043',
+      '#FFEB3B',
+      '#FFD180',
+      '#BDBDBD',
+      '#78909C',
+      '#37474F',
+    ];
     await this.usersRepository.update(id, { sex, isAuthorized: true });
     groupIds.forEach(async (groupId) => {
       await this.belongTosRepository.save({
@@ -102,6 +129,7 @@ export class UsersService {
       await this.followsRepository.save({
         GroupId: groupId,
         UserId: id,
+        color: colorPalettes[Math.floor(Math.random() * colorPalettes.length)],
       });
     });
   }

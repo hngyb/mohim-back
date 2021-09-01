@@ -29,6 +29,9 @@ export class Follows {
   @Column('int', { primary: true, name: 'GroupId' })
   GroupId: number;
 
+  @Column('char', { name: 'color', length: 7 })
+  color: string;
+
   @ManyToOne(() => Users, (users) => users.Follows, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
