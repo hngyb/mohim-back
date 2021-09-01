@@ -129,6 +129,7 @@ export class UsersService {
       await this.followsRepository.save({
         GroupId: groupId,
         UserId: id,
+        isBelongTo: true,
         color: colorPalettes[Math.floor(Math.random() * colorPalettes.length)],
       });
     });

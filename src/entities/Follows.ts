@@ -29,6 +29,9 @@ export class Follows {
   @Column('int', { primary: true, name: 'GroupId' })
   GroupId: number;
 
+  @Column('boolean', { name: 'isBelongTo', default: false })
+  isBelongTo: boolean;
+
   @Column('char', { name: 'color', length: 7 })
   color: string;
 
