@@ -7,11 +7,10 @@ import { AuthModule } from 'src/auth/auth.module';
 import { Groups } from 'src/entities/Groups';
 import { Events } from 'src/entities/Events';
 import { Follows } from 'src/entities/Follows';
-import { BelongTos } from 'src/entities/BelongTos';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Users, Groups, Events, Follows, BelongTos]),
+    TypeOrmModule.forFeature([Users, Groups, Events, Follows]),
     forwardRef(() => AuthModule),
   ],
   providers: [UsersService],

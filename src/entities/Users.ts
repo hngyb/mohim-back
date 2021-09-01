@@ -18,7 +18,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { BelongTos } from './BelongTos';
 import { Follows } from './Follows';
 import { Groups } from './Groups';
 import { Manages } from './Manages';
@@ -128,23 +127,6 @@ export class Users {
 
   @DeleteDateColumn()
   deletedAt: Date | null;
-
-  @ManyToMany(() => Groups, (groups) => groups.Users)
-  @JoinTable({
-    name: 'belongtos',
-    joinColumn: {
-      name: 'UserId',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'GroupId',
-      referencedColumnName: 'id',
-    },
-  })
-  BelongToGroups: Groups[];
-
-  @OneToMany(() => BelongTos, (belongtos) => belongtos.User)
-  BelongTos: BelongTos[];
 
   @ManyToMany(() => Groups, (groups) => groups.Followers)
   @JoinTable({

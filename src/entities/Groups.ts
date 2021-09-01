@@ -11,7 +11,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { BelongTos } from './BelongTos';
 import { Events } from './Events';
 import { Follows } from './Follows';
 import { Manages } from './Manages';
@@ -75,12 +74,6 @@ export class Groups {
 
   @DeleteDateColumn()
   deletedAt: Date | null;
-
-  @ManyToMany(() => Users, (users) => users.BelongToGroups)
-  Users: Users[];
-
-  @OneToMany(() => BelongTos, (belongtos) => belongtos.BelongToGroup)
-  BelongTos: BelongTos[];
 
   @ManyToMany(() => Users, (users) => users.FollowGroups)
   Followers: Users[];

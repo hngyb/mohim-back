@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { BelongTos } from 'src/entities/BelongTos';
 import { Events } from 'src/entities/Events';
 import { Follows } from 'src/entities/Follows';
 import { Groups } from 'src/entities/Groups';
@@ -9,9 +8,7 @@ import { GroupsController } from './groups.controller';
 import { GroupsService } from './groups.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Users, Groups, Events, Follows, BelongTos]),
-  ],
+  imports: [TypeOrmModule.forFeature([Users, Groups, Events, Follows])],
   providers: [GroupsService],
   controllers: [GroupsController],
 })

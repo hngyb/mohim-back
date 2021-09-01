@@ -1,7 +1,6 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from 'src/entities/Users';
-import { BelongTos } from 'src/entities/BelongTos';
 import { Follows } from 'src/entities/Follows';
 import { Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
@@ -11,8 +10,6 @@ import { AuthService } from 'src/auth/auth.service';
 export class UsersService {
   constructor(
     @InjectRepository(Users) private usersRepository: Repository<Users>,
-    @InjectRepository(BelongTos)
-    private belongTosRepository: Repository<BelongTos>,
     @InjectRepository(Follows)
     private followsRepository: Repository<Follows>,
     private authService: AuthService,
@@ -119,12 +116,6 @@ export class UsersService {
       '#37474F',
     ];
     await this.usersRepository.update(id, { sex, isAuthorized: true });
-    groupIds.forEach(async (groupId) => {
-      await this.belongTosRepository.save({
-        GroupId: groupId,
-        UserId: id,
-      });
-    });
     groupIds.forEach(async (groupId) => {
       await this.followsRepository.save({
         GroupId: groupId,

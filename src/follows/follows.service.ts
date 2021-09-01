@@ -20,7 +20,14 @@ export class FollowsService {
   async getFollows(UserId: string) {
     return this.followRepository.find({
       where: { UserId },
-      select: ['GroupId', 'createdAt', 'color', 'updatedAt', 'deletedAt'],
+      select: [
+        'GroupId',
+        'createdAt',
+        'color',
+        'isBelongTo',
+        'updatedAt',
+        'deletedAt',
+      ],
     });
   }
 }

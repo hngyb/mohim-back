@@ -10,7 +10,6 @@ import { AuthModule } from './auth/auth.module';
 import { GroupsModule } from './groups/groups.module';
 import { EventsModule } from './events/events.module';
 import { FollowsModule } from './follows/follows.module';
-import { BelongTosModule } from './belong-tos/belong-tos.module';
 
 @Module({
   imports: [
@@ -21,7 +20,6 @@ import { BelongTosModule } from './belong-tos/belong-tos.module';
     GroupsModule,
     EventsModule,
     FollowsModule,
-    BelongTosModule,
   ],
   controllers: [AppController],
   providers: [AppService],

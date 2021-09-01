@@ -1,6 +1,5 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import dotenv from 'dotenv';
-import { BelongTos } from 'src/entities/BelongTos';
 import { Events } from 'src/entities/Events';
 import { Follows } from 'src/entities/Follows';
 import { Groups } from 'src/entities/Groups';
@@ -15,7 +14,7 @@ const config: TypeOrmModuleOptions = {
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  entities: [Users, Groups, Events, BelongTos, Follows, Manages],
+  entities: [Users, Groups, Events, Follows, Manages],
   migrations: [__dirname + '/src/migrations/*.ts'],
   cli: { migrationsDir: 'src/migrations' },
   // autoLoadEntities: true,
