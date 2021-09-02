@@ -32,4 +32,14 @@ export class FollowsController {
     const userId = req.user.id;
     return await this.followService.getFollows(userId);
   }
+
+  @ApiOperation({ summary: '팔로잉 그룹 색상 수정하기' })
+  @UseGuards(JwtAuthGuard)
+  @Post('color')
+  async changeColor(@Request() req, @Body() data) {
+    const color = data.color;
+    const groupId = data.groupId;
+    const userId = req.user.id;
+    return await this.followService.changeColor(userId, groupId, color);
+  }
 }

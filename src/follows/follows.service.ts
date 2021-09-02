@@ -30,4 +30,12 @@ export class FollowsService {
       ],
     });
   }
+
+  async changeColor(UserId: string, GroupId: number, color: string) {
+    const followGroup = await this.followRepository.findOne({
+      where: { UserId, GroupId },
+    });
+    followGroup.color = color;
+    await this.followRepository.save(followGroup);
+  }
 }

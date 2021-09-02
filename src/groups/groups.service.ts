@@ -30,4 +30,22 @@ export class GroupsService {
     return await entitiyManager.query(`
         SELECT * FROM mohim.groups WHERE name = church and category = 'church'`);
   }
+
+  async getDistrictList(church: string) {
+    const entitiyManager = getManager();
+    return await entitiyManager.query(`
+        SELECT * FROM mohim.groups WHERE church = '${church}' and category = 'district'`);
+  }
+
+  async getGroupList(church: string) {
+    const entitiyManager = getManager();
+    return await entitiyManager.query(`
+        SELECT * FROM mohim.groups WHERE church = '${church}' and category = 'group'`);
+  }
+
+  async getServiceList(church: string) {
+    const entitiyManager = getManager();
+    return await entitiyManager.query(`
+        SELECT * FROM mohim.groups WHERE church = '${church}' and category = 'service'`);
+  }
 }
