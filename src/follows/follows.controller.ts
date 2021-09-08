@@ -19,10 +19,19 @@ export class FollowsController {
   @ApiOperation({ summary: '팔로잉 그룹 생성하기' })
   @UseGuards(JwtAuthGuard)
   @Post()
-  async createEvent(@Body() data: CreateFollowDto, @Request() req) {
-    const groupId = data.GroupId;
+  async createFollow(@Body() data, @Request() req) {
+    const groupId = data.groupId;
     const userId = req.user.id;
     return await this.followService.createFollow(groupId, userId);
+  }
+
+  @ApiOperation({ summary: '팔로잉 그룹 삭제하기' })
+  @UseGuards(JwtAuthGuard)
+  @Post('delete')
+  async deleteFollow(@Body() data, @Request() req) {
+    const groupId = data.groupId;
+    const userId = req.user.id;
+    return await this.followService.deleteFollow(groupId, userId);
   }
 
   @ApiOperation({ summary: '팔로잉 그룹 조회하기' })
