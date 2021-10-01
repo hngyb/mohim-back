@@ -7,6 +7,7 @@ import {
   Post,
   Request,
   UseGuards,
+  Res,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt.guard';
@@ -14,6 +15,7 @@ import { JwtRefreshGuard } from 'src/auth/jwt-refresh.guart';
 import { LocalAuthGuard } from 'src/auth/local-auth.guard';
 import { JoinRequestDto } from './dto/join.request.dto';
 import { UsersService } from './users.service';
+import { Response } from 'express';
 
 @ApiTags('USERS')
 @Controller('api/users')
@@ -40,9 +42,21 @@ export class UsersController {
   @ApiOperation({ summary: '로그인' })
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Request() req) {
+  async login(@Request() req, @Res() response: Response) {
     const user = req.user;
-    return await this.userService.login(user);
+    const token = await this.userService.login(user);
+    response
+      .cookie('accessToken', token.accessToken, {
+        httpOnly: true,
+        domain: 'localhost',
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+      })
+      .cookie('refreshToken', token.refreshToken, {
+        httpOnly: true,
+        domain: 'localhost',
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+      })
+      .send({ user: user });
   }
 
   @ApiOperation({ summary: '성도 등록' })
@@ -61,17 +75,36 @@ export class UsersController {
   @ApiOperation({ summary: 'access 토큰 재발급' })
   @UseGuards(JwtRefreshGuard)
   @Get('refresh-access')
-  async refreshAccess(@Request() req) {
+  async refreshAccess(@Request() req, @Res() response: Response) {
     const user = req.user;
-    return await this.userService.refreshAccessToken(user);
+    const { accessToken } = await this.userService.refreshAccessToken(user);
+    response
+      .cookie('accessToken', accessToken, {
+        httpOnly: true,
+        domain: 'localhost',
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+      })
+      .send({ success: true });
   }
 
   @ApiOperation({ summary: 'refresh & access 토큰 재발급' })
   @UseGuards(JwtRefreshGuard)
   @Get('refresh-all')
-  async refreshAll(@Request() req) {
+  async refreshAll(@Request() req, @Res() response: Response) {
     const user = req.user;
-    return await this.userService.login(user);
+    const token = await this.userService.login(user);
+    response
+      .cookie('accessToken', token.accessToken, {
+        httpOnly: true,
+        domain: 'localhost',
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+      })
+      .cookie('refreshToken', token.refreshToken, {
+        httpOnly: true,
+        domain: 'localhost',
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+      })
+      .send({ user: user });
   }
 
   @ApiOperation({ summary: '성도 인증 요청' })
@@ -79,6 +112,7 @@ export class UsersController {
   @Post('request-authorization')
   async requestAuthorization(@Body() data) {
     const inviteCode = data.inviteCode;
+    console.log(inviteCode);
     const user = await this.userService.findById(inviteCode);
     if (!user) {
       throw new BadRequestException();

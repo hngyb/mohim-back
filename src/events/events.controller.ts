@@ -16,13 +16,14 @@ export class EventsController {
     return await this.eventService.createEvent(data);
   }
 
-  @ApiOperation({ summary: '일정 갖고오기' })
+  @ApiOperation({ summary: '월별 일정 갖고오기' })
   @UseGuards(JwtAuthGuard)
-  @Get()
-  async getEvents(
-    @Query('date') date: Date | null,
+  @Get('monthly')
+  async getMonthlyEvents(
+    @Query('year') year: string,
+    @Query('month') month: string,
     @Query('groupId') groupId: number,
   ) {
-    return this.eventService.getEvents(date, groupId);
+    return this.eventService.getMonthlyEvents(year, month, groupId);
   }
 }

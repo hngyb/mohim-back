@@ -16,14 +16,21 @@ export class GroupsController {
     return await this.groupService.createGroup(data);
   }
 
-  @ApiOperation({ summary: '그룹 ID 검색' })
+  @ApiOperation({ summary: '교회명과 그룹명으로 그룹 정보 검색' })
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getGroupId(
+  async getGroupInfoByName(
     @Query('name') name: string,
     @Query('church') church: string,
   ) {
     return await this.groupService.getGroupId(name, church);
+  }
+
+  @ApiOperation({ summary: '그룹 아이디로 그룹 정보 검색' })
+  @UseGuards(JwtAuthGuard)
+  @Get('group-info')
+  async getGroupName(@Query('groupId') groupId: number) {
+    return await this.groupService.getGroupName(groupId);
   }
 
   @ApiOperation({ summary: '교회 목록 가져오기' })
@@ -31,6 +38,13 @@ export class GroupsController {
   @Get('church-list')
   async getChurchList() {
     return await this.groupService.getChurchList();
+  }
+
+  @ApiOperation({ summary: '전체 목록 가져오기' })
+  @UseGuards(JwtAuthGuard)
+  @Get('all-list')
+  async getAllList(@Query('church') church: string) {
+    return await this.groupService.getAllList(church);
   }
 
   @ApiOperation({ summary: '구역 목록 가져오기' })

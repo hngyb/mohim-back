@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Groups } from 'src/entities/Groups';
-import { getManager, Repository } from 'typeorm';
+import { createQueryBuilder, getManager, Repository } from 'typeorm';
 import { CreateGroupDto } from './dto/create-group.dto';
 
 @Injectable()
@@ -25,12 +25,24 @@ export class GroupsService {
     });
   }
 
+  async getGroupName(groupId: number) {
+    return this.groupRepository.findOne({
+      where: { id: groupId },
+      select: ['id', 'name', 'church', 'category'],
+    });
+  }
+
   async getChurchList() {
     const entitiyManager = getManager();
     return await entitiyManager.query(`
         SELECT * FROM mohim.groups WHERE name = church and category = 'church'`);
   }
 
+  async getAllList(church: string) {
+    const entitiyManager = getManager();
+    return await entitiyManager.query(`
+        SELECT * FROM mohim.groups WHERE church = '${church}'`);
+  }
   async getDistrictList(church: string) {
     const entitiyManager = getManager();
     return await entitiyManager.query(`

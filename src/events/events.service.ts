@@ -23,14 +23,9 @@ export class EventsService {
     await this.eventRepository.save(newEvent);
   }
 
-  async getEvents(date: Date | null, groupId: number) {
+  async getMonthlyEvents(year: string, month: string, groupId: number) {
     const entitiyManager = getManager();
-    if (date == null) {
-      return await entitiyManager.query(`
-        SELECT * FROM events WHERE groupID = ${groupId}`);
-    } else {
-      return await entitiyManager.query(`
-    SELECT * FROM events WHERE DATE(updatedAt) >= DATE('${date}') and groupID = ${groupId}`);
-    }
+    return await entitiyManager.query(`
+    SELECT id, title, startTime, endTime, location, notice, GroupId, createdAt, updatedAt, deletedAt, DATE_FORMAT(date,'%Y-%m-%d') AS date FROM events WHERE MONTH(date) = ${month} and YEAR(date) = ${year} and GroupId = ${groupId}`);
   }
 }

@@ -47,7 +47,6 @@ export class UsersService {
     return {
       accessToken: accessToken,
       refreshToken: refreshToken,
-      ...user,
     };
   }
 
