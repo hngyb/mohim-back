@@ -53,7 +53,7 @@ export class Users {
   @IsNotEmpty()
   @ApiProperty({
     example: 'abcd1234!@#$',
-    description: '비밀번호',
+    description: '해시된 비밀번호',
   })
   @Column('varchar', { name: 'password', length: 300, select: false })
   password: string;
@@ -88,7 +88,7 @@ export class Users {
 
   @IsString()
   @ApiProperty({
-    example: '경기도 파주시 청암로',
+    example: '경기도 파주시',
     description: '주소',
   })
   @Column('varchar', { name: 'address', length: 200, nullable: true })

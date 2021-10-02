@@ -56,15 +56,15 @@ export class Groups {
   @IsString()
   @IsNotEmpty()
   @ApiProperty({
-    example: 'church | district | group | service | fellowship',
+    example: 'church | district | department | service | fellowship',
     description: '그룹 구분',
   })
   @Column('enum', {
     name: 'category',
-    enum: ['church', 'district', 'group', 'service', 'fellowship'],
+    enum: ['church', 'district', 'department', 'service', 'fellowship'],
     default: 'fellowship',
   })
-  category: 'church' | 'district' | 'group' | 'service' | 'fellowship';
+  category: 'church' | 'district' | 'department' | 'service' | 'fellowship';
 
   @CreateDateColumn()
   createdAt: Date;

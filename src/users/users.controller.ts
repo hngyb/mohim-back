@@ -65,7 +65,7 @@ export class UsersController {
   async register(@Body() data, @Request() req) {
     const id = req.user.id;
     const sex = data.sex;
-    const groups = [data.church, data.district, data.group];
+    const groups = [data.church, data.district, data.department];
     data.services.forEach((service) => {
       groups.push(service);
     });

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Groups } from 'src/entities/Groups';
-import { createQueryBuilder, getManager, Repository } from 'typeorm';
+import { getManager, Repository } from 'typeorm';
 import { CreateGroupDto } from './dto/create-group.dto';
 
 @Injectable()
@@ -33,31 +33,37 @@ export class GroupsService {
   }
 
   async getChurchList() {
-    const entitiyManager = getManager();
-    return await entitiyManager.query(`
-        SELECT * FROM mohim.groups WHERE name = church and category = 'church'`);
+    return this.groupRepository.find({
+      where: { category: 'church' },
+      select: ['id', 'name', 'church', , 'isPublic', 'category'],
+    });
   }
 
   async getAllList(church: string) {
-    const entitiyManager = getManager();
-    return await entitiyManager.query(`
-        SELECT * FROM mohim.groups WHERE church = '${church}'`);
-  }
-  async getDistrictList(church: string) {
-    const entitiyManager = getManager();
-    return await entitiyManager.query(`
-        SELECT * FROM mohim.groups WHERE church = '${church}' and category = 'district'`);
+    return this.groupRepository.find({
+      where: { church: church },
+      select: ['id', 'name', 'church', , 'isPublic', 'category'],
+    });
   }
 
-  async getGroupList(church: string) {
-    const entitiyManager = getManager();
-    return await entitiyManager.query(`
-        SELECT * FROM mohim.groups WHERE church = '${church}' and category = 'group'`);
+  async getDistrictList(church: string) {
+    return this.groupRepository.find({
+      where: { church: church, category: 'district' },
+      select: ['id', 'name', 'church', , 'isPublic', 'category'],
+    });
+  }
+
+  async getDepartmentList(church: string) {
+    return this.groupRepository.find({
+      where: { church: church, category: 'department' },
+      select: ['id', 'name', 'church', , 'isPublic', 'category'],
+    });
   }
 
   async getServiceList(church: string) {
-    const entitiyManager = getManager();
-    return await entitiyManager.query(`
-        SELECT * FROM mohim.groups WHERE church = '${church}' and category = 'service'`);
+    return this.groupRepository.find({
+      where: { church: church, category: 'service' },
+      select: ['id', 'name', 'church', , 'isPublic', 'category'],
+    });
   }
 }
